@@ -10,4 +10,13 @@ describe('Orange-HRM Tests', () => {
         cy.location('pathname').should('eq', '/web/index.php/dashboard/index')
         cy.get('.oxd-topbar-header-breadcrumb > .oxd-text').should('have.text', 'Dashboard')
     })
+
+    it('Failed login', () => {
+        cy.visit('/auth/login')
+        cy.title().should('eq', 'OrangeHRM')
+        cy.get('input[name="username"]').type('Admin')
+        cy.get('input[name="password"]').type('admin1234')
+        cy.get('button[type="submit"]').click()
+        cy.get('.oxd-alert-content').should('have.text', 'Invalid credentials')
+    })
 })
