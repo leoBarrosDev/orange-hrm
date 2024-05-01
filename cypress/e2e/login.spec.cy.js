@@ -10,9 +10,12 @@ describe('Orange-HRM Tests', () => {
         submitButton: "[type='submit']"
     }
 
-    it('Success login', () => {
+    beforeEach(() => {
         cy.visit('/auth/login')
         cy.title().should('eq', 'OrangeHRM')
+    })
+
+    it('Success login', () => {
         cy.get(selectorList.usernameField).type(user.name)
         cy.get(selectorList.passwordField).type(user.password)
         cy.get(selectorList.submitButton).click()
@@ -21,8 +24,6 @@ describe('Orange-HRM Tests', () => {
     })
 
     it('Failed login with invalid user', () => {
-        cy.visit('/auth/login')
-        cy.title().should('eq', 'OrangeHRM')
         cy.get(selectorList.usernameField).type('Administrator')
         cy.get(selectorList.passwordField).type(user.password)
         cy.get(selectorList.submitButton).click()
@@ -30,8 +31,6 @@ describe('Orange-HRM Tests', () => {
     })
 
     it('Failed login with invalid password', () => {
-        cy.visit('/auth/login')
-        cy.title().should('eq', 'OrangeHRM')
         cy.get(selectorList.usernameField).type(user.name)
         cy.get(selectorList.passwordField).type('admin1234')
         cy.get(selectorList.submitButton).click()
