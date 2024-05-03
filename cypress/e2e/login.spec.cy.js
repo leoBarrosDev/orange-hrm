@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 
 import user from '../fixtures/users/user.json'
-import Login, { } from '../pages/loginPage.js'
 
 describe('Orange-HRM Tests', () => {
 
