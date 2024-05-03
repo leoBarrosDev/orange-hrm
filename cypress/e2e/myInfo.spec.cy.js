@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import MyInfo from '../pages/myInfoPage.js';
 import user from '../fixtures/users/user.json'
 import { faker } from '@faker-js/faker'
 
@@ -12,30 +13,20 @@ describe('My-Info tests', () => {
     }
 
     beforeEach(() => {
-        cy.visit('/auth/login')
+        cy.accessLoginPage()
+        cy.login(user.name, user.password)
         cy.title().should('eq', 'OrangeHRM')
-        cy.get(selectorList.usernameField).type(user.name)
-        cy.get(selectorList.passwordField).type(user.password)
-        cy.get(selectorList.submitButton).click()
+        MyInfo.accessMyInfoPage()
+
     })
-    it('Test Update My Info', () => {
-        cy.get("[href='/web/index.php/pim/viewMyDetails']").click()
-        cy.get('[name="firstName"]').clear().type(faker.person.firstName())
-        cy.get('[name="middleName"]').clear().type(faker.person.middleName())
-        cy.get('[name="lastName"]').clear().type(faker.person.lastName())
-        cy.get('.oxd-input-group').eq(4).clear().type(faker.string.alphanumeric(10))
-        cy.get('.oxd-input-group').eq(5).clear().type(faker.string.alphanumeric(10))
-        cy.get('.oxd-input-group').eq(6).clear().type(faker.number.int({ min: 1, max: 5 }))
-        cy.get('.oxd-date-input').eq(0).clear().type("2024-22-11")
-        cy.get('.--close').click()
-        cy.get('.oxd-select-text-input').eq(0).click()
-        cy.get(':nth-child(27) > span').click()
-        cy.get('.oxd-radio-input').eq(1).click()
-        cy.get("[type='submit']").eq(0).click()
-        cy.get('.oxd-text--toast-message')
-            .should('be.visible')
-            .and('have.text', 'Successfully Updated')
-
-
+    it.only('Test Update My Info', () => {
+        MyInfo.fillEmployeeFullName(faker.person.firstName(), faker.person.middleName(), faker.person.lastName())
+        MyInfo.fillEmployeeIds(faker.string.alphanumeric(10), faker.string.alphanumeric(10), faker.number.int({ min: 1, max: 5 }))
+        MyInfo.fillDataLicense(faker.number.int({ min: 1, max: 5 }), faker.date.future().toISOString().slice(0, 10))
+        MyInfo.fillNatiionality()
+        MyInfo.fillBirthdate(faker.date.future().toISOString().slice(0, 10))
+        MyInfo.fillGender()
+        MyInfo.sendNewData()
+        MyInfo.successupdateData()
     })
 })
